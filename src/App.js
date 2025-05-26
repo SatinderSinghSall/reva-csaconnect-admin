@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import Login from "./pages/Login";
+import Users from "./pages/Users";
+import Posts from "./pages/Posts";
+import Sidebar from "./components/Sidebar";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("adminToken"));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {!token ? (
+        <Login setToken={setToken} />
+      ) : (
+        <div className="flex">
+          <Sidebar setToken={setToken} />
+          <div className="flex-1 p-6 bg-gray-100 min-h-screen">
+            <Routes>
+              <Route path="/users" element={<Users token={token} />} />
+              <Route path="/posts" element={<Posts token={token} />} />
+            </Routes>
+          </div>
+        </div>
+      )}
+    </BrowserRouter>
   );
 }
 
