@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { Users, FileText } from "lucide-react";
-import { getUsers, getPosts } from "../api"; // Ensure these endpoints exist
+import { getUsers, getPosts } from "../api";
 
 const Dashboard = ({ token }) => {
   const [userCount, setUserCount] = useState(0);
   const [postCount, setPostCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [adminName, setAdminName] = useState("Admin");
 
   useEffect(() => {
+    const name = localStorage.getItem("adminName") || "Admin";
+    setAdminName(name);
+
     const fetchCounts = async () => {
       try {
         const usersRes = await getUsers(token);
@@ -26,6 +30,21 @@ const Dashboard = ({ token }) => {
   return (
     <div className="p-6 min-h-screen bg-gray-50">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
+
+      {/* Greeting Message */}
+      <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 shadow-sm">
+        <p className="text-gray-700 text-lg">
+          👋 Hello, <span className="font-semibold">{adminName}</span> —{" "}
+          {new Date().toLocaleString(undefined, {
+            weekday: "long",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
+      </div>
 
       {loading ? (
         <p className="text-gray-500">Loading dashboard...</p>

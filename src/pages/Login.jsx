@@ -23,8 +23,12 @@ const Login = ({ setToken }) => {
     setLoading(true);
     try {
       const res = await loginAdmin({ email, password });
-      setToken(res.data.token);
-      localStorage.setItem("adminToken", res.data.token);
+      const { token, admin } = res.data;
+
+      setToken(token);
+      localStorage.setItem("adminToken", token);
+      localStorage.setItem("adminName", admin.name); // Save admin name here
+
       toast.success("Admin login successful!");
       navigate("/dashboard");
     } catch (error) {
