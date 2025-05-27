@@ -3,6 +3,8 @@ import { useState } from "react";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
 import Posts from "./pages/Posts";
+import Dashboard from "./pages/Dashboard";
+import Admins from "./pages/Admins";
 import Sidebar from "./components/Sidebar";
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
             <Routes>
               <Route path="/users" element={<Users token={token} />} />
               <Route path="/posts" element={<Posts token={token} />} />
+              <Route path="/dashboard" element={<Dashboard token={token} />} />
+              <Route path="/admins" element={<Admins token={token} />} />
             </Routes>
           </div>
         </div>

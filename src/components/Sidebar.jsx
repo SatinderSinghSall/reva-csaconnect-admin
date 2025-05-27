@@ -1,5 +1,11 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { LogOut, Users, FileText } from "lucide-react";
+import {
+  LogOut,
+  Users,
+  FileText,
+  LayoutDashboard,
+  UserCheck,
+} from "lucide-react";
 import { toast } from "react-toastify";
 
 const Sidebar = ({ setToken }) => {
@@ -25,6 +31,14 @@ const Sidebar = ({ setToken }) => {
       <div>
         <h1 className="text-2xl font-bold text-white mb-6">Admin Panel</h1>
         <nav className="space-y-2">
+          <Link to="/dashboard" className={navItemClasses("/dashboard")}>
+            <LayoutDashboard size={20} />
+            Dashboard
+          </Link>
+          <Link to="/admins" className={navItemClasses("/admins")}>
+            <UserCheck size={20} />
+            Admins
+          </Link>
           <Link to="/users" className={navItemClasses("/users")}>
             <Users size={20} />
             Users
