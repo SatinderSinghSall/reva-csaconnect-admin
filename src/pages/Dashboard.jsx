@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Users, FileText } from "lucide-react";
-import { getUsers, getPosts } from "../api";
+import { Users, FileText, ShieldUser } from "lucide-react";
+import { getUsers, getPosts, getAdmins } from "../api";
 
 const Dashboard = ({ token }) => {
   const [userCount, setUserCount] = useState(0);
   const [postCount, setPostCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [adminName, setAdminName] = useState("Admin");
 
@@ -16,8 +17,10 @@ const Dashboard = ({ token }) => {
       try {
         const usersRes = await getUsers(token);
         const postsRes = await getPosts(token);
+        const adminRes = await getAdmins(token);
         setUserCount(usersRes.data.length);
         setPostCount(postsRes.data.length);
+        setAdminCount(adminRes.data.length);
       } catch (err) {
         console.error("Error fetching dashboard data", err);
       } finally {
@@ -69,6 +72,19 @@ const Dashboard = ({ token }) => {
             <div>
               <p className="text-xl font-semibold text-gray-800">{postCount}</p>
               <p className="text-gray-500">Total Posts</p>
+            </div>
+          </div>
+
+          {/* Admin Card */}
+          <div className="bg-white rounded-2xl shadow p-6 flex items-center gap-4 hover:shadow-lg transition">
+            <div className="bg-green-100 text-green-600 rounded-full p-3">
+              <ShieldUser size={32} />
+            </div>
+            <div>
+              <p className="text-xl font-semibold text-gray-800">
+                {adminCount}
+              </p>
+              <p className="text-gray-500">Total Admins</p>
             </div>
           </div>
         </div>
