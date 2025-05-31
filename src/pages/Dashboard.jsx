@@ -31,12 +31,12 @@ const Dashboard = ({ token }) => {
   }, [token]);
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50">
+    <div className="p-6 min-h-screen bg-gray-50 pt-20 md:pt-6">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
 
       {/* Greeting Message */}
       <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 shadow-sm">
-        <p className="text-gray-700 text-lg">
+        <p className="text-gray-700 text-base sm:text-lg break-words">
           👋 Hello, <span className="font-semibold">{adminName}</span> —{" "}
           {new Date().toLocaleString(undefined, {
             weekday: "long",

@@ -37,7 +37,7 @@ const Users = ({ token }) => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 pt-20 md:pt-6 bg-gray-50 min-h-screen">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
           <UsersIcon size={28} className="text-blue-600" />
