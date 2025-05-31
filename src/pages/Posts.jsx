@@ -8,6 +8,8 @@ const Posts = ({ token }) => {
   const [deletingId, setDeletingId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+  const [deletingCommentId, setDeletingCommentId] = useState(null);
 
   useEffect(() => {
     fetchPosts();
@@ -257,32 +259,125 @@ const Posts = ({ token }) => {
                         </p>
                       </div>
                       <button
-                        onClick={async () => {
-                          try {
-                            await deleteComment(
-                              selectedPost._id,
-                              comment._id,
-                              token
-                            );
-                            setSelectedPost((prev) => ({
-                              ...prev,
-                              comments: prev.comments.filter(
-                                (c) => c._id !== comment._id
-                              ),
-                            }));
-                          } catch (err) {
-                            alert("Failed to delete comment");
-                          }
-                        }}
-                        className="text-red-500 text-xs ml-2 hover:text-red-700"
+                        onClick={() => setCommentToDelete(comment)}
+                        className="text-red-500 text-xs ml-2 hover:text-red-700 disabled:opacity-50"
+                        disabled={deletingCommentId === comment._id}
                       >
-                        Delete
+                        {deletingCommentId === comment._id ? (
+                          <svg
+                            className="animate-spin h-4 w-4 text-red-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                            />
+                          </svg>
+                        ) : (
+                          "Delete"
+                        )}
                       </button>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {commentToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-lg relative">
+            <button
+              onClick={() => setCommentToDelete(null)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              aria-label="Close confirmation modal"
+            >
+              <X size={24} />
+            </button>
+            <h3 className="text-xl font-semibold mb-4">
+              Confirm Comment Deletion
+            </h3>
+            <p className="mb-6">
+              Are you sure you want to delete this comment by{" "}
+              <span className="font-semibold">
+                {commentToDelete.user?.name || "User"}
+              </span>
+              ?
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setCommentToDelete(null)}
+                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  setDeletingCommentId(commentToDelete._id);
+                  try {
+                    await deleteComment(
+                      selectedPost._id,
+                      commentToDelete._id,
+                      token
+                    );
+                    setSelectedPost((prev) => ({
+                      ...prev,
+                      comments: prev.comments.filter(
+                        (c) => c._id !== commentToDelete._id
+                      ),
+                    }));
+                  } catch (err) {
+                    alert("Failed to delete comment");
+                  } finally {
+                    setDeletingCommentId(null);
+                    setCommentToDelete(null);
+                  }
+                }}
+                disabled={deletingCommentId === commentToDelete._id}
+                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition flex items-center justify-center gap-2"
+              >
+                {deletingCommentId === commentToDelete._id ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      />
+                    </svg>
+                    Deleting...
+                  </>
+                ) : (
+                  "Delete"
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
