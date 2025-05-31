@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPosts, deletePost } from "../api";
+import { getPosts, deletePost, deleteComment } from "../api";
 import { Trash2, X, FileText } from "lucide-react";
 
 const Posts = ({ token }) => {
@@ -7,6 +7,7 @@ const Posts = ({ token }) => {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
     fetchPosts();
@@ -54,7 +55,8 @@ const Posts = ({ token }) => {
           {posts.map((post) => (
             <div
               key={post._id}
-              className="bg-white rounded-2xl shadow-md p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-lg transition"
+              className="bg-white rounded-2xl shadow-md p-6 flex flex-col md:flex-row justify-between items-start md:items-center hover:shadow-lg transition cursor-pointer"
+              onClick={() => setSelectedPost(post)}
             >
               <div className="flex-1">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -84,6 +86,7 @@ const Posts = ({ token }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 underline text-sm mt-2 inline-block hover:text-blue-700 transition"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     View Link
                   </a>
@@ -91,7 +94,10 @@ const Posts = ({ token }) => {
               </div>
 
               <button
-                onClick={() => setConfirmDeleteId(post._id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setConfirmDeleteId(post._id);
+                }}
                 className="mt-4 md:mt-0 text-red-600 hover:text-red-800 transition rounded-full p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-red-500"
                 aria-label={`Delete post titled ${post.title}`}
                 disabled={deletingId === post._id}
@@ -180,6 +186,103 @@ const Posts = ({ token }) => {
                 )}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Post Detail Modal */}
+      {selectedPost && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white max-w-2xl w-full rounded-2xl shadow-lg p-6 relative overflow-y-auto max-h-[90vh]">
+            <button
+              onClick={() => setSelectedPost(null)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              aria-label="Close detail modal"
+            >
+              <X size={24} />
+            </button>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              {selectedPost.title}
+            </h2>
+            <p className="text-gray-700 mb-4 whitespace-pre-wrap">
+              {selectedPost.content}
+            </p>
+
+            <div className="text-sm text-gray-600 mb-2">
+              <strong>Author:</strong> {selectedPost.author?.name || "Unknown"}
+            </div>
+            <div className="text-sm text-gray-600 mb-2">
+              <strong>Created:</strong>{" "}
+              {new Date(selectedPost.createdAt).toLocaleString()}
+            </div>
+
+            {selectedPost.skills?.length > 0 && (
+              <div className="text-sm text-gray-600 mb-2">
+                <strong>Skills:</strong> {selectedPost.skills.join(", ")}
+              </div>
+            )}
+
+            {selectedPost.link && (
+              <div className="mt-2">
+                <a
+                  href={selectedPost.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline hover:text-blue-700"
+                >
+                  Visit Link
+                </a>
+              </div>
+            )}
+
+            {selectedPost.comments?.length > 0 && (
+              <div className="mt-6">
+                <h4 className="text-lg font-semibold mb-2">Comments</h4>
+                <ul className="space-y-2 max-h-40 overflow-y-auto pr-2">
+                  {selectedPost.comments.map((comment, index) => (
+                    <li
+                      key={index}
+                      className="border-t pt-2 text-sm text-gray-700 flex justify-between items-start"
+                    >
+                      <div>
+                        <p>
+                          <span className="font-medium">
+                            {comment.user?.name || "User"}:
+                          </span>{" "}
+                          {comment.text}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(comment.createdAt).toLocaleString()}
+                        </p>
+                      </div>
+                      <button
+                        onClick={async () => {
+                          try {
+                            await deleteComment(
+                              selectedPost._id,
+                              comment._id,
+                              token
+                            );
+                            setSelectedPost((prev) => ({
+                              ...prev,
+                              comments: prev.comments.filter(
+                                (c) => c._id !== comment._id
+                              ),
+                            }));
+                          } catch (err) {
+                            alert("Failed to delete comment");
+                          }
+                        }}
+                        className="text-red-500 text-xs ml-2 hover:text-red-700"
+                      >
+                        Delete
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       )}

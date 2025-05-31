@@ -25,3 +25,7 @@ export const updateAdmin = (id, data, token) =>
   api.put(`/admins/${id}`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
+export const deleteComment = (postId, commentId, token) =>
+  api.delete(`/posts/${postId}/comments/${commentId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
