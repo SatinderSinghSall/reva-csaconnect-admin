@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   LogOut,
@@ -5,12 +6,15 @@ import {
   FileText,
   LayoutDashboard,
   UserCheck,
+  Menu,
+  X,
 } from "lucide-react";
 import { toast } from "react-toastify";
 
 const Sidebar = ({ setToken }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
@@ -20,44 +24,84 @@ const Sidebar = ({ setToken }) => {
   };
 
   const navItemClasses = (path) =>
-    `flex items-center gap-3 px-4 py-2 rounded-lg transition ${
+    `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
       pathname === path
-        ? "bg-blue-600 text-white"
-        : "text-gray-300 hover:bg-gray-700 hover:text-white"
+        ? "bg-blue-600 text-white shadow"
+        : "text-gray-400 hover:bg-gray-800 hover:text-white"
     }`;
 
   return (
-    <div className="w-64 h-screen bg-gray-900 p-6 shadow-xl flex flex-col justify-between">
-      <div>
-        <h1 className="text-2xl font-bold text-white mb-6">Admin Panel</h1>
-        <nav className="space-y-2">
-          <Link to="/dashboard" className={navItemClasses("/dashboard")}>
-            <LayoutDashboard size={20} />
-            Dashboard
-          </Link>
-          <Link to="/admins" className={navItemClasses("/admins")}>
-            <UserCheck size={20} />
-            Admins
-          </Link>
-          <Link to="/users" className={navItemClasses("/users")}>
-            <Users size={20} />
-            Users
-          </Link>
-          <Link to="/posts" className={navItemClasses("/posts")}>
-            <FileText size={20} />
-            Posts
-          </Link>
-        </nav>
-      </div>
-
+    <>
+      {/* Mobile Toggle Button */}
       <button
-        onClick={handleLogout}
-        className="flex items-center gap-3 px-4 py-2 rounded-lg text-red-400 hover:text-white hover:bg-red-600 transition"
+        className="md:hidden p-4 text-white fixed top-4 left-4 z-50 bg-gray-800 rounded-full shadow-lg"
+        onClick={() => setIsOpen(true)}
       >
-        <LogOut size={20} />
-        Logout
+        <Menu size={24} />
       </button>
-    </div>
+
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-950 border-r border-gray-800 shadow-xl z-50 transform transition-transform duration-300
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+        md:translate-x-0 md:static md:h-screen`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between md:justify-center p-5 border-b border-gray-800">
+          <h1 className="text-3xl font-semibold tracking-tight bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text">
+            Admin Panel
+          </h1>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="md:hidden text-gray-400 hover:text-white transition"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Sidebar Content */}
+        <div className="flex flex-col h-full overflow-y-auto">
+          {/* Navigation Links */}
+          <div className="p-4 space-y-2">
+            <Link to="/dashboard" className={navItemClasses("/dashboard")}>
+              <LayoutDashboard size={20} />
+              Dashboard
+            </Link>
+            <Link to="/admins" className={navItemClasses("/admins")}>
+              <UserCheck size={20} />
+              Admins
+            </Link>
+            <Link to="/users" className={navItemClasses("/users")}>
+              <Users size={20} />
+              Users
+            </Link>
+            <Link to="/posts" className={navItemClasses("/posts")}>
+              <FileText size={20} />
+              Posts
+            </Link>
+          </div>
+
+          {/* Logout Button */}
+          <div className="p-4 border-t border-gray-800 mt-auto bg-gray-950">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-400 hover:text-white hover:bg-red-600 transition-all duration-200"
+            >
+              <LogOut size={20} />
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
