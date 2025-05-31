@@ -1,11 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+
+//! Pages:
 import Login from "./pages/Login";
 import Users from "./pages/Users";
 import Posts from "./pages/Posts";
 import Dashboard from "./pages/Dashboard";
 import Admins from "./pages/Admins";
+
+//! Components:
 import Sidebar from "./components/Sidebar";
+import AddQuiz from "./components/AddQuiz";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("adminToken"));
@@ -23,6 +28,7 @@ function App() {
               <Route path="/posts" element={<Posts token={token} />} />
               <Route path="/dashboard" element={<Dashboard token={token} />} />
               <Route path="/admins" element={<Admins token={token} />} />
+              <Route path="/add-quiz" element={<AddQuiz />} />
             </Routes>
           </div>
         </div>

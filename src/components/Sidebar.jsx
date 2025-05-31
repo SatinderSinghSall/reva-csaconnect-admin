@@ -8,6 +8,7 @@ import {
   UserCheck,
   Menu,
   X,
+  MessageCircleQuestion,
 } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -108,6 +109,10 @@ const Sidebar = ({ setToken }) => {
             <Link to="/posts" className={navItemClasses("/posts")}>
               <FileText size={20} />
               Posts
+            </Link>
+            <Link to="/add-quiz" className={navItemClasses("/add-quiz")}>
+              <MessageCircleQuestion size={20} />
+              Add a Quiz
             </Link>
           </div>
 
