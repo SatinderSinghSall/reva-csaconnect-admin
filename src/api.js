@@ -4,6 +4,14 @@ const api = axios.create({
   baseURL: "https://csaconnect-backend.onrender.com/api/admin",
 });
 
+/*
+  > IN Production / Deployment API Link:
+  https://csaconnect-backend.onrender.com
+
+  > Development API Link:
+  http://localhost:5000/
+*/
+
 export const loginAdmin = (credentials) => api.post("/auth/login", credentials);
 export const getUsers = (token) =>
   api.get("/users", { headers: { Authorization: `Bearer ${token}` } });

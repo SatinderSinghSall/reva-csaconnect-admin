@@ -10,7 +10,7 @@ import Admins from "./pages/Admins";
 
 //! Components:
 import Sidebar from "./components/Sidebar";
-import AddQuiz from "./components/AddQuiz";
+import AddChallenges from "./components/AddChallenges";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("adminToken"));
@@ -28,7 +28,7 @@ function App() {
               <Route path="/posts" element={<Posts token={token} />} />
               <Route path="/dashboard" element={<Dashboard token={token} />} />
               <Route path="/admins" element={<Admins token={token} />} />
-              <Route path="/add-quiz" element={<AddQuiz />} />
+              <Route path="/add-challenges" element={<AddChallenges />} />
             </Routes>
           </div>
         </div>

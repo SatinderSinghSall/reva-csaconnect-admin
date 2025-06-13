@@ -110,9 +110,12 @@ const Sidebar = ({ setToken }) => {
               <FileText size={20} />
               Posts
             </Link>
-            <Link to="/add-quiz" className={navItemClasses("/add-quiz")}>
+            <Link
+              to="/add-challenges"
+              className={navItemClasses("/add-challenges")}
+            >
               <MessageCircleQuestion size={20} />
-              Add a Quiz
+              Add Challenges
             </Link>
           </div>
 
