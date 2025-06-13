@@ -28,6 +28,7 @@ const Login = ({ setToken }) => {
       setToken(token);
       localStorage.setItem("adminToken", token);
       localStorage.setItem("adminName", admin.name);
+      localStorage.setItem("adminId", admin._id);
 
       toast.success("Admin login successful!");
       navigate("/dashboard");

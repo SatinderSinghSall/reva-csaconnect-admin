@@ -13,11 +13,12 @@ const AddChallenges = () => {
   });
   const [status, setStatus] = useState({ message: "", type: "" });
   const [loading, setLoading] = useState(false);
+  const adminName = localStorage.getItem("adminName");
 
   useEffect(() => {
-    const adminName = localStorage.getItem("adminName");
-    if (adminName) {
-      setFormData((prev) => ({ ...prev, postedBy: adminName }));
+    const adminId = localStorage.getItem("adminId");
+    if (adminId) {
+      setFormData((prev) => ({ ...prev, postedBy: adminId }));
     }
   }, []);
 
@@ -112,10 +113,10 @@ const AddChallenges = () => {
             />
           </div>
 
-          {/* Optional: Display who is posting */}
+          {/* Display who is posting */}
           <div className="text-sm text-gray-500">
-            Posting as:{" "}
-            <span className="font-semibold">{formData.postedBy}</span>
+            Posting as: <span className="font-semibold">{adminName}</span> -
+            Admin
           </div>
 
           {status.message && (
