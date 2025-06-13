@@ -7,6 +7,7 @@ import Users from "./pages/Users";
 import Posts from "./pages/Posts";
 import Dashboard from "./pages/Dashboard";
 import Admins from "./pages/Admins";
+import ViewAllChallenges from "./pages/ViewAllChallenges";
 
 //! Components:
 import Sidebar from "./components/Sidebar";
@@ -29,6 +30,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard token={token} />} />
               <Route path="/admins" element={<Admins token={token} />} />
               <Route path="/add-challenges" element={<AddChallenges />} />
+              <Route path="/all-challenges" element={<ViewAllChallenges />} />
             </Routes>
           </div>
         </div>

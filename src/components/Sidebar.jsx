@@ -9,6 +9,7 @@ import {
   Menu,
   X,
   MessageCircleQuestion,
+  Eye,
 } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -116,6 +117,13 @@ const Sidebar = ({ setToken }) => {
             >
               <MessageCircleQuestion size={20} />
               Add Challenges
+            </Link>
+            <Link
+              to="/all-challenges"
+              className={navItemClasses("/all-challenges")}
+            >
+              <Eye size={20} />
+              View All Challenges
             </Link>
           </div>
 
