@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { MessageCircleQuestion } from "lucide-react";
@@ -9,9 +9,17 @@ const AddChallenges = () => {
     title: "",
     content: "",
     link: "",
+    postedBy: "",
   });
   const [status, setStatus] = useState({ message: "", type: "" });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const adminName = localStorage.getItem("adminName");
+    if (adminName) {
+      setFormData((prev) => ({ ...prev, postedBy: adminName }));
+    }
+  }, []);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,7 +36,12 @@ const AddChallenges = () => {
       );
       setStatus({ message: response.data.message, type: "success" });
       toast.success(response.data.message || "Challenge submitted!");
-      setFormData({ title: "", content: "", link: "" });
+      setFormData({
+        title: "",
+        content: "",
+        link: "",
+        postedBy: formData.postedBy,
+      });
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Submission failed.";
@@ -97,6 +110,12 @@ const AddChallenges = () => {
               className="w-full border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
               placeholder="https://official-link.com"
             />
+          </div>
+
+          {/* Optional: Display who is posting */}
+          <div className="text-sm text-gray-500">
+            Posting as:{" "}
+            <span className="font-semibold">{formData.postedBy}</span>
           </div>
 
           {status.message && (
