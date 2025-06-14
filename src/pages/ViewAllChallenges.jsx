@@ -8,6 +8,8 @@ function ViewAllChallenges() {
   const [currentEdit, setCurrentEdit] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [updating, setUpdating] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [challengeToDelete, setChallengeToDelete] = useState(null);
 
   const fetchChallenges = async () => {
     try {
@@ -22,17 +24,27 @@ function ViewAllChallenges() {
     }
   };
 
-  const deleteChallenge = async (id) => {
-    setDeletingId(id);
+  const confirmDelete = (challenge) => {
+    setChallengeToDelete(challenge);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmedDelete = async () => {
+    if (!challengeToDelete) return;
+    setDeletingId(challengeToDelete._id);
     try {
       await axios.delete(
-        `https://csaconnect-backend.onrender.com/api/challenges/${id}`
+        `https://csaconnect-backend.onrender.com/api/challenges/${challengeToDelete._id}`
       );
-      setChallenges((prev) => prev.filter((c) => c._id !== id));
+      setChallenges((prev) =>
+        prev.filter((c) => c._id !== challengeToDelete._id)
+      );
     } catch (error) {
       console.error("Failed to delete challenge", error);
     } finally {
       setDeletingId(null);
+      setShowDeleteConfirm(false);
+      setChallengeToDelete(null);
     }
   };
 
@@ -127,7 +139,7 @@ function ViewAllChallenges() {
                       Edit
                     </button>
                     <button
-                      onClick={() => deleteChallenge(challenge._id)}
+                      onClick={() => confirmDelete(challenge)}
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 disabled:opacity-60"
                       disabled={deletingId === challenge._id}
                     >
@@ -188,6 +200,41 @@ function ViewAllChallenges() {
                 disabled={updating}
               >
                 {updating ? "Updating..." : "Update"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && challengeToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md">
+            <h3 className="text-xl font-semibold mb-4 text-red-600">
+              Confirm Deletion
+            </h3>
+            <p className="mb-6">
+              Are you sure you want to delete the challenge "
+              <strong>{challengeToDelete.title}</strong>"?
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setChallengeToDelete(null);
+                }}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmedDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                disabled={deletingId === challengeToDelete._id}
+              >
+                {deletingId === challengeToDelete._id
+                  ? "Deleting..."
+                  : "Confirm"}
               </button>
             </div>
           </div>
