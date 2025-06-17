@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function ViewAllChallenges() {
   const [challenges, setChallenges] = useState([]);
@@ -39,6 +40,7 @@ function ViewAllChallenges() {
       setChallenges((prev) =>
         prev.filter((c) => c._id !== challengeToDelete._id)
       );
+      toast.success("Challenge is Deleted Successfully!");
     } catch (error) {
       console.error("Failed to delete challenge", error);
     } finally {
@@ -68,6 +70,7 @@ function ViewAllChallenges() {
       setChallenges((prev) =>
         prev.map((c) => (c._id === currentEdit._id ? currentEdit : c))
       );
+      toast.success("Challenge is Updated Successfully!");
       setIsEditModalOpen(false);
       setCurrentEdit(null);
     } catch (error) {
