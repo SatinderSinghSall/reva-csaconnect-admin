@@ -80,9 +80,12 @@ const Sidebar = ({ setToken }) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between md:justify-center p-5 border-b border-gray-800">
-          <h1 className="text-3xl font-semibold tracking-tight bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text">
+          <Link
+            to="/"
+            className="text-3xl font-semibold tracking-tight bg-gradient-to-r from-blue-400 to-cyan-400 text-transparent bg-clip-text hover:opacity-80 transition"
+          >
             Admin Panel
-          </h1>
+          </Link>
           <button
             onClick={() => setIsOpen(false)}
             className="md:hidden text-gray-400 hover:text-white transition"

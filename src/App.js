@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
 //! Pages:
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
 import Posts from "./pages/Posts";
@@ -25,6 +26,7 @@ function App() {
           <Sidebar setToken={setToken} />
           <div className="flex-1 p-6 bg-gray-100 min-h-screen">
             <Routes>
+              <Route path="/" element={<Home />} />
               <Route path="/users" element={<Users token={token} />} />
               <Route path="/posts" element={<Posts token={token} />} />
               <Route path="/dashboard" element={<Dashboard token={token} />} />
