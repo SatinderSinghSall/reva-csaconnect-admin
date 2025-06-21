@@ -17,37 +17,39 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-200 px-4 py-12 flex justify-center items-center">
-      <div className="w-full max-w-3xl bg-white/70 backdrop-blur-md border border-blue-100 rounded-3xl shadow-xl p-8 sm:p-12 transition-all duration-300">
-        <h1 className="text-4xl sm:text-5xl font-bold text-blue-700 mb-6">
-          CSAConnect Admin
-        </h1>
-
-        <p className="text-lg sm:text-xl text-gray-800 mb-8 leading-relaxed">
-          👋 Hello, <span className="font-semibold">{adminName}</span>. <br />
-          Welcome back to the control center. Easily manage users, posts, and
-          system settings — all in one place.
-        </p>
-
-        <button
-          onClick={handleClick}
-          className="group flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-lg rounded-xl shadow-md transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300"
-        >
-          View your Dashboard
-          <svg
-            className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
+    <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-white to-[#e0e7ff] flex items-center justify-center px-6 py-12">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-8 md:p-14 border border-gray-200 transition duration-300 ease-in-out">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 tracking-tight mb-4">
+            Welcome, Admin ✨
+          </h1>
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-xl mx-auto mb-10">
+            👋 Hello,{" "}
+            <span className="font-semibold text-gray-800">{adminName}</span>.{" "}
+            <br />
+            You’ve entered the control hub — manage users, posts, challenges,
+            and more from one intuitive dashboard.
+          </p>
+          <button
+            onClick={handleClick}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-medium rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+            View Dashboard
+            <svg
+              className="w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );
