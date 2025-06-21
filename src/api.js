@@ -37,3 +37,7 @@ export const deleteComment = (postId, commentId, token) =>
   api.delete(`/posts/${postId}/comments/${commentId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+export const getChallengeCount = (token) =>
+  api.get("/challenges/count", {
+    headers: { Authorization: `Bearer ${token}` },
+  });

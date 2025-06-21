@@ -128,6 +128,14 @@ const Sidebar = ({ setToken }) => {
               <Eye size={20} />
               View All Challenges
             </Link>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center border border-1 gap-3 px-4 py-3 w-full rounded-xl text-red-400 hover:text-white hover:bg-red-600 transition-all duration-200"
+            >
+              <LogOut size={20} />
+              Logout
+            </button>
           </div>
 
           {/* Logout Button */}

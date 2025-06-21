@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Users, FileText, ShieldUser } from "lucide-react";
-import { getUsers, getPosts, getAdmins } from "../api";
+import { Users, FileText, ShieldUser, Trophy } from "lucide-react";
+import { getUsers, getPosts, getAdmins, getChallengeCount } from "../api";
 
 const Dashboard = ({ token }) => {
   const [userCount, setUserCount] = useState(0);
@@ -8,6 +8,7 @@ const Dashboard = ({ token }) => {
   const [adminCount, setAdminCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [adminName, setAdminName] = useState("Admin");
+  const [challengeCount, setChallengeCount] = useState(0);
 
   useEffect(() => {
     const name = localStorage.getItem("adminName") || "Admin";
@@ -15,12 +16,16 @@ const Dashboard = ({ token }) => {
 
     const fetchCounts = async () => {
       try {
-        const usersRes = await getUsers(token);
-        const postsRes = await getPosts(token);
-        const adminRes = await getAdmins(token);
+        const [usersRes, postsRes, adminRes, challengeRes] = await Promise.all([
+          getUsers(token),
+          getPosts(token),
+          getAdmins(token),
+          getChallengeCount(token),
+        ]);
         setUserCount(usersRes.data.length);
         setPostCount(postsRes.data.length);
         setAdminCount(adminRes.data.length);
+        setChallengeCount(challengeRes.data.count);
       } catch (err) {
         console.error("Error fetching dashboard data", err);
       } finally {
@@ -85,6 +90,19 @@ const Dashboard = ({ token }) => {
                 {adminCount}
               </p>
               <p className="text-gray-500">Total Admins</p>
+            </div>
+          </div>
+
+          {/* Challenge Card */}
+          <div className="bg-white rounded-2xl shadow p-6 flex items-center gap-4 hover:shadow-lg transition">
+            <div className="bg-purple-100 text-purple-600 rounded-full p-3">
+              <Trophy size={32} />
+            </div>
+            <div>
+              <p className="text-xl font-semibold text-gray-800">
+                {challengeCount}
+              </p>
+              <p className="text-gray-500">Total Challenges</p>
             </div>
           </div>
         </div>
