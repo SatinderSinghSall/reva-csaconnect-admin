@@ -194,105 +194,155 @@ const Posts = ({ token }) => {
 
       {/* Post Detail Modal */}
       {selectedPost && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white max-w-2xl w-full rounded-2xl shadow-lg p-6 relative overflow-y-auto max-h-[90vh]">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto scroll-smooth">
+            {/* Close Button */}
             <button
               onClick={() => setSelectedPost(null)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              aria-label="Close detail modal"
+              className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full bg-white shadow-md p-1"
+              aria-label="Close Post Details"
             >
-              <X size={24} />
+              <X size={20} />
             </button>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {selectedPost.title}
-            </h2>
-            <p className="text-gray-700 mb-4 whitespace-pre-wrap">
-              {selectedPost.content}
-            </p>
+            <div className="p-6">
+              {/* Image */}
+              {selectedPost.image && (
+                <div className="mb-6 rounded-xl overflow-hidden">
+                  <img
+                    src={selectedPost.image}
+                    alt={selectedPost.title}
+                    className="w-full h-64 object-cover transition-transform duration-300 hover:scale-[1.02]"
+                  />
+                </div>
+              )}
 
-            <div className="text-sm text-gray-600 mb-2">
-              <strong>Author:</strong> {selectedPost.author?.name || "Unknown"}
-            </div>
-            <div className="text-sm text-gray-600 mb-2">
-              <strong>Created:</strong>{" "}
-              {new Date(selectedPost.createdAt).toLocaleString()}
-            </div>
+              {/* Title */}
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                {selectedPost.title}
+              </h2>
 
-            {selectedPost.skills?.length > 0 && (
+              {/* Metadata */}
               <div className="text-sm text-gray-600 mb-2">
-                <strong>Skills:</strong> {selectedPost.skills.join(", ")}
+                <strong>Author:</strong>{" "}
+                {selectedPost.author?.name || "Unknown"}
               </div>
-            )}
-
-            {selectedPost.link && (
-              <div className="mt-2">
-                <a
-                  href={selectedPost.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline hover:text-blue-700"
-                >
-                  Visit Link
-                </a>
+              <div className="text-sm text-gray-600 mb-4">
+                <strong>Created:</strong>{" "}
+                {new Date(selectedPost.createdAt).toLocaleString()}
               </div>
-            )}
 
-            {selectedPost.comments?.length > 0 && (
-              <div className="mt-6">
-                <h4 className="text-lg font-semibold mb-2">Comments</h4>
-                <ul className="space-y-2 max-h-40 overflow-y-auto pr-2">
-                  {selectedPost.comments.map((comment, index) => (
-                    <li
+              {/* Skills */}
+              {selectedPost.skills?.length > 0 && (
+                <div className="mb-4 flex flex-wrap gap-2">
+                  {selectedPost.skills.map((skill, index) => (
+                    <span
                       key={index}
-                      className="border-t pt-2 text-sm text-gray-700 flex justify-between items-start"
+                      className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-medium"
                     >
-                      <div>
-                        <p>
-                          <span className="font-medium">
-                            {comment.user?.name || "User"}:
-                          </span>{" "}
-                          {comment.text}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(comment.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => setCommentToDelete(comment)}
-                        className="text-red-500 text-xs ml-2 hover:text-red-700 disabled:opacity-50"
-                        disabled={deletingCommentId === comment._id}
-                      >
-                        {deletingCommentId === comment._id ? (
-                          <svg
-                            className="animate-spin h-4 w-4 text-red-600"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            />
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                            />
-                          </svg>
-                        ) : (
-                          "Delete"
-                        )}
-                      </button>
-                    </li>
+                      {skill}
+                    </span>
                   ))}
-                </ul>
-              </div>
-            )}
+                </div>
+              )}
+
+              {/* Content */}
+              <p className="text-gray-700 mb-4 whitespace-pre-wrap leading-relaxed">
+                {selectedPost.content}
+              </p>
+
+              {/* Link */}
+              {selectedPost.link && (
+                <div className="mb-6">
+                  <a
+                    href={selectedPost.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-medium transition group"
+                  >
+                    <span className="inline-flex items-center justify-center bg-blue-100 group-hover:bg-blue-200 text-blue-600 rounded-full p-1 transition-transform">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 group-hover:scale-110 transition-transform"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13.828 10.172a4 4 0 010 5.656l-1.415 1.414a4 4 0 01-5.656-5.656l1.414-1.414m5.657 5.657L21 21m0 0h-6m6 0v-6"
+                        />
+                      </svg>
+                    </span>
+                    <span className="underline underline-offset-2">
+                      Visit External Link
+                    </span>
+                  </a>
+                </div>
+              )}
+
+              {/* Comments */}
+              {selectedPost.comments?.length > 0 && (
+                <div className="mt-8">
+                  <h4 className="text-lg font-semibold mb-4">Comments</h4>
+                  <ul className="space-y-4 max-h-48 overflow-y-auto pr-2">
+                    {selectedPost.comments.map((comment, index) => (
+                      <li
+                        key={index}
+                        className="border-t pt-3 text-sm text-gray-700 flex justify-between items-start"
+                      >
+                        <div className="flex-1">
+                          <p>
+                            <span className="font-semibold">
+                              {comment.user?.name || "User"}:
+                            </span>{" "}
+                            {comment.text}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(comment.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setCommentToDelete(comment)}
+                          className="text-red-500 text-xs ml-3 hover:text-red-700 transition disabled:opacity-50"
+                          disabled={deletingCommentId === comment._id}
+                          aria-label={`Delete comment by ${
+                            comment.user?.name || "User"
+                          }`}
+                        >
+                          {deletingCommentId === comment._id ? (
+                            <svg
+                              className="animate-spin h-4 w-4 text-red-600"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                              />
+                            </svg>
+                          ) : (
+                            "Delete"
+                          )}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
