@@ -215,7 +215,23 @@ const Admins = ({ token }) => {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Loading admins...</p>
+        <div className="grid gap-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl shadow p-4 flex justify-between items-center animate-pulse"
+            >
+              <div>
+                <div className="h-5 w-32 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 w-48 bg-gray-200 rounded"></div>
+              </div>
+              <div className="flex gap-2">
+                <div className="h-8 w-16 bg-gray-200 rounded"></div>
+                <div className="h-8 w-16 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : admins.length === 0 ? (
         <p className="text-gray-500">No admins found.</p>
       ) : (
