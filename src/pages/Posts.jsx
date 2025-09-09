@@ -49,7 +49,22 @@ const Posts = ({ token }) => {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Loading posts...</p>
+        <div className="grid gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl shadow-md p-6 flex flex-col md:flex-row justify-between items-start md:items-center animate-pulse"
+            >
+              <div className="flex-1 space-y-2">
+                <div className="h-6 w-3/4 bg-gray-200 rounded"></div>{" "}
+                <div className="h-4 w-2/6 bg-gray-200 rounded"></div>{" "}
+                <div className="h-4 w-5/6 bg-gray-200 rounded"></div>{" "}
+                <div className="h-4 w-1/2 bg-gray-200 rounded"></div>{" "}
+              </div>
+              <div className="mt-4 md:mt-0 h-10 w-10 bg-gray-200 rounded-full"></div>{" "}
+            </div>
+          ))}
+        </div>
       ) : posts.length === 0 ? (
         <p className="text-gray-500">No posts found.</p>
       ) : (
