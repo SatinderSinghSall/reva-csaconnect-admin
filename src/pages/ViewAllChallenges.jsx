@@ -84,7 +84,59 @@ function ViewAllChallenges() {
     fetchChallenges();
   }, []);
 
-  if (loading) return <h1 className="text-center text-xl mt-10">Loading...</h1>;
+  if (loading)
+    return (
+      <div className="p-8 max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
+          All Challenges
+        </h2>
+
+        <div className="overflow-x-auto shadow-md rounded-xl bg-white">
+          <table className="min-w-full text-sm text-left text-gray-800 border border-gray-200">
+            <thead className="bg-gray-100 text-gray-700 text-xs uppercase">
+              <tr>
+                {[
+                  "Title",
+                  "Content",
+                  "Link",
+                  "Posted By",
+                  "Created At",
+                  "Actions",
+                ].map((header, i) => (
+                  <th key={i} className="px-6 py-4">
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {[1, 2, 3, 4].map((row) => (
+                <tr key={row} className="animate-pulse">
+                  <td className="px-6 py-4">
+                    <div className="h-4 w-32 bg-gray-200 rounded"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 w-48 bg-gray-200 rounded"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 w-32 bg-gray-200 rounded"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 w-20 bg-gray-200 rounded mx-auto"></div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
 
   return (
     <div className="p-8 max-w-7xl mx-auto font-sans">
