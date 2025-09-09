@@ -6,9 +6,9 @@ const Dashboard = ({ token }) => {
   const [userCount, setUserCount] = useState(0);
   const [postCount, setPostCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
+  const [challengeCount, setChallengeCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [adminName, setAdminName] = useState("Admin");
-  const [challengeCount, setChallengeCount] = useState(0);
 
   useEffect(() => {
     const name = localStorage.getItem("adminName") || "Admin";
@@ -35,6 +35,17 @@ const Dashboard = ({ token }) => {
     fetchCounts();
   }, [token]);
 
+  // Skeleton card component
+  const SkeletonCard = () => (
+    <div className="bg-white rounded-2xl shadow p-6 flex items-center gap-4 animate-pulse">
+      <div className="rounded-full bg-gray-200 p-6"></div>
+      <div className="flex-1">
+        <div className="h-6 bg-gray-200 rounded w-16 mb-2"></div>
+        <div className="h-4 bg-gray-200 rounded w-24"></div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="p-6 min-h-screen bg-gray-50 pt-20 md:pt-6">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
@@ -55,7 +66,12 @@ const Dashboard = ({ token }) => {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Loading dashboard...</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Users Card */}
@@ -80,7 +96,7 @@ const Dashboard = ({ token }) => {
             </div>
           </div>
 
-          {/* Admin Card */}
+          {/* Admins Card */}
           <div className="bg-white rounded-2xl shadow p-6 flex items-center gap-4 hover:shadow-lg transition">
             <div className="bg-green-100 text-green-600 rounded-full p-3">
               <ShieldUser size={32} />
@@ -93,7 +109,7 @@ const Dashboard = ({ token }) => {
             </div>
           </div>
 
-          {/* Challenge Card */}
+          {/* Challenges Card */}
           <div className="bg-white rounded-2xl shadow p-6 flex items-center gap-4 hover:shadow-lg transition">
             <div className="bg-purple-100 text-purple-600 rounded-full p-3">
               <Trophy size={32} />
