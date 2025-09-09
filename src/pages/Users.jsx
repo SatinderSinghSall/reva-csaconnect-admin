@@ -46,7 +46,20 @@ const Users = ({ token }) => {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Loading users...</p>
+        <div className="grid gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm animate-pulse"
+            >
+              <div>
+                <div className="h-5 w-32 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 w-48 bg-gray-200 rounded"></div>
+              </div>
+              <div className="h-8 w-20 bg-gray-200 rounded"></div>
+            </div>
+          ))}
+        </div>
       ) : users.length === 0 ? (
         <p className="text-gray-500">No users found.</p>
       ) : (
